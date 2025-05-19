@@ -1,5 +1,5 @@
 from src.pydantic_models import JSONTextEmbeddingRequest
-from src.helper import get_downloaded_models, get_model
+from src.helper import get_downloaded_models, get_model, delete_model
 from fastapi import FastAPI
 from fastapi.responses import RedirectResponse
 from fastapi.middleware.cors import CORSMiddleware
@@ -31,9 +31,18 @@ def embed_text(request: JSONTextEmbeddingRequest) ->  list[list[float]]:
     return embedding
 
 @server.get("/get_downloaded_models/")
-def get_downloaded_text_models():
+def get_downloaded_models_():
     return get_downloaded_models()
     
+@server.get("/delete_model/{model_path:path}")
+def delete_model_(model_path: str):
+    """
+    Usage: ```{modality}/{model_provider}/{model_name}```
+    
+    example: ```delete_model("text/sentence-transformers/all-MiniLM-L6-v2")```
+    """
+    return delete_model(model_path)
+
 if __name__ == "__main__":
     __init__()
     uvicorn.run("app:server",host="0.0.0.0", port=8000)

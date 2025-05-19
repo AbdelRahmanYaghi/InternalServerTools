@@ -1,6 +1,7 @@
 from .constants import MODEL_PATHS 
 from sentence_transformers import SentenceTransformer
 import os 
+import shutil
 
 def get_downloaded_models() -> list[str]:
     out_dict = {}
@@ -21,3 +22,10 @@ def get_model(embedding_model: str, model_kwargs: dict):
         model.save(os.path.join(MODEL_PATHS, "text", embedding_model))
     
     return model
+
+def delete_model(model_path):
+    if os.path.exists(os.path.join(MODEL_PATHS, model_path)):
+        shutil.rmtree(os.path.join(MODEL_PATHS, model_path))
+        return f"Success. Model {model_path} removed successfully"
+    else:
+        return f"Failed. Model {model_path} not found"
