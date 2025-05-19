@@ -20,9 +20,9 @@ def __init__():
     os.makedirs("models/text", exist_ok=True)
     os.makedirs("logs", exist_ok=True)
     
-@server.get("/")
+@server.get("/", include_in_schema=False)
 def redirect_to_docs():
-    return RedirectResponse(url="/docs", include_in_schema=False)
+    return RedirectResponse(url="/docs")
 
 @server.post("/embed_text")
 def embed_text(request: JSONTextEmbeddingRequest) ->  list[list[float]]:
